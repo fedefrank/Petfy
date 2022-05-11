@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Petfy.Data;
 
@@ -11,9 +12,10 @@ using Petfy.Data;
 namespace Petfy.Data.Migrations
 {
     [DbContext(typeof(PetfyDbContext))]
-    partial class PetfyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220511213342_AddVaccine")]
+    partial class AddVaccine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,24 +101,6 @@ namespace Petfy.Data.Migrations
                     b.ToTable("Pets");
                 });
 
-            modelBuilder.Entity("Petfy.Domain.PetVaccine", b =>
-                {
-                    b.Property<int>("PetID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VaccineID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateApplied")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PetID", "VaccineID");
-
-                    b.HasIndex("VaccineID");
-
-                    b.ToTable("PetVaccine");
-                });
-
             modelBuilder.Entity("Petfy.Domain.Vaccine", b =>
                 {
                     b.Property<int>("ID")
@@ -136,14 +120,21 @@ namespace Petfy.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Vaccines");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Lab = "Lab Demo",
-                            Name = "Vaccine Demo"
-                        });
+            modelBuilder.Entity("PetVaccine", b =>
+                {
+                    b.Property<int>("PetsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VaccinesID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PetsID", "VaccinesID");
+
+                    b.HasIndex("VaccinesID");
+
+                    b.ToTable("PetVaccine");
                 });
 
             modelBuilder.Entity("Petfy.Domain.Pet", b =>
@@ -157,38 +148,24 @@ namespace Petfy.Data.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Petfy.Domain.PetVaccine", b =>
+            modelBuilder.Entity("PetVaccine", b =>
                 {
-                    b.HasOne("Petfy.Domain.Pet", "Pet")
-                        .WithMany("PetVaccines")
-                        .HasForeignKey("PetID")
+                    b.HasOne("Petfy.Domain.Pet", null)
+                        .WithMany()
+                        .HasForeignKey("PetsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Petfy.Domain.Vaccine", "Vaccine")
-                        .WithMany("PetVaccines")
-                        .HasForeignKey("VaccineID")
+                    b.HasOne("Petfy.Domain.Vaccine", null)
+                        .WithMany()
+                        .HasForeignKey("VaccinesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Pet");
-
-                    b.Navigation("Vaccine");
                 });
 
             modelBuilder.Entity("Petfy.Domain.Owner", b =>
                 {
                     b.Navigation("Pets");
-                });
-
-            modelBuilder.Entity("Petfy.Domain.Pet", b =>
-                {
-                    b.Navigation("PetVaccines");
-                });
-
-            modelBuilder.Entity("Petfy.Domain.Vaccine", b =>
-                {
-                    b.Navigation("PetVaccines");
                 });
 #pragma warning restore 612, 618
         }

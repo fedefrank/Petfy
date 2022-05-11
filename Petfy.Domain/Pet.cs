@@ -1,4 +1,7 @@
-﻿namespace Petfy.Domain
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Petfy.Domain
 {
     public class Pet
     {
@@ -9,5 +12,12 @@
         public string Breed { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Type { get; set; }
+        public Owner Owner { get; set; }
+        
+        //[ForeignKey("OwnerID")]
+        public int OwnerID { get; set; }
+
+        public List<PetVaccine> PetVaccines { get; set; } = new List<PetVaccine>();
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Petfy.Data;
 
@@ -11,9 +12,10 @@ using Petfy.Data;
 namespace Petfy.Data.Migrations
 {
     [DbContext(typeof(PetfyDbContext))]
-    partial class PetfyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220511214337_AddPetVaccine")]
+    partial class AddPetVaccine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,14 +138,6 @@ namespace Petfy.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Vaccines");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Lab = "Lab Demo",
-                            Name = "Vaccine Demo"
-                        });
                 });
 
             modelBuilder.Entity("Petfy.Domain.Pet", b =>
